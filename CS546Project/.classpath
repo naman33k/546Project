@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/coreUtilities-0.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/curator-client-0.6.jar"/>
+	<classpathentry kind="lib" path="lib/edison-0.2.9-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/edison-0.2.9-sources.jar"/>
+	<classpathentry kind="lib" path="lib/edison-0.2.9.jar"/>
+	<classpathentry kind="lib" path="lib/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/jwnl-1.4_rc3.jar"/>
+	<classpathentry kind="lib" path="lib/LBJLibrary-2.8.2.jar"/>
+	<classpathentry kind="lib" path="lib/libthrift-0.4.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/snowball-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/JLIS-multiclass-0.5.jar"/>
+	<classpathentry kind="lib" path="lib/JLIS-multiclass-0.5-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="lib/JLIS-multiclass-0.5-sources.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

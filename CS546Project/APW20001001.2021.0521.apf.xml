@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE source_file SYSTEM "apf.v4.0.1.dtd">
+<source_file URI="APW20001001.2021.0521.sgm" SOURCE="newswire" TYPE="text" VERSION="4.0" AUTHOR="LDC" ENCODING="UTF-8">
+<document DOCID="APW20001001.2021.0521">
+<entity ID="APW20001001.2021.0521-E15" TYPE="GPE" SUBTYPE="Population-Center" CLASS="SPC">
+  <entity_mention ID="15-1" TYPE="NAM" LDCTYPE="NAM" ROLE="LOC">
+    <extent>
+      <charseq START="113" END="124">CAIRO, Egypt</charseq>
+    </extent>
+    <head>
+      <charseq START="113" END="117">CAIRO</charseq>
+    </head>
+  </entity_mention>
+  <entity_attributes>
+    <name>
+      <charseq START="113" END="117">CAIRO</charseq>
+    </name>
+  </entity_attributes>
+</entity>
+<entity ID="APW20001001.2021.0521-E43" TYPE="GPE" SUBTYPE="Nation" CLASS="SPC">
+  <entity_mention ID="43-5" TYPE="PRE" LDCTYPE="PRE" ROLE="GPE" LDCATR="TRUE">
+    <extent>
+      <charseq START="460" END="467">Egyptian</charseq>
+    </extent>
+    <head>
+      <charseq START="460" END="467">Egyptian</charseq>
+    </head>
+  </entity_mention>
+  <entity_mention ID="43-86" TYPE="NAM" LDCTYPE="NAM" ROLE="LOC" LDCATR="FALSE">
+    <extent>
+      <charseq START="120" END="124">Egypt</charseq>
+    </extent>
+    <head>
+      <charseq START="120" END="124">Egypt</charseq>
+    </head>
+  </entity_mention>
+  <entity_attributes>
+    <name>
+      <charseq START="120" END="124">Egypt</charseq>
+    </name>
+    <name>
+      <charseq START="2767" END="2771">Egypt</charseq>
+    </name>
+    <name>
+      <charseq START="2816" END="2820">Egypt</charseq>
+    </name>
+    <name>
+      <charseq START="3008" END="3012">Egypt</charseq>
+    </name>
+  </entity_attributes>
+</entity>
+<relation ID="APW20001001.2021.0521-R1" TYPE="PHYS" SUBTYPE="Part-Whole">
+  <rel_entity_arg ENTITYID="APW20001001.2021.0521-E15" ARGNUM="1" />
+  <rel_entity_arg ENTITYID="APW20001001.2021.0521-E43" ARGNUM="2" />
+  <relation_mention ID="1-1" LDCLEXICALCONDITION="Formulaic">
+    <ldc_extent>
+      <charseq START="113" END="124">CAIRO, Egypt</charseq>
+    </ldc_extent>
+    <rel_mention_arg ENTITYMENTIONID="15-1" ARGNUM="1">
+      <extent>
+        <charseq START="113" END="124">CAIRO, Egypt</charseq>
+      </extent>
+    </rel_mention_arg>
+    <rel_mention_arg ENTITYMENTIONID="43-86" ARGNUM="2">
+      <extent>
+        <charseq START="120" END="124">Egypt</charseq>
+      </extent>
+    </rel_mention_arg>
+  </relation_mention>
+</relation>
+</document>
+</source_file>
