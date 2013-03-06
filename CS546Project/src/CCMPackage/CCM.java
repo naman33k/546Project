@@ -23,7 +23,7 @@ public class CCM {
 			
 	}
 	public static void train(){
-		
+		/// I have to write these functions :) :)
 		
 		
 	}
