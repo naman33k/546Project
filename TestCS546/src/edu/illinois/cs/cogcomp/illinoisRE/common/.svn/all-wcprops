@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/cogcomp/!svn/ver/10753/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/common
+END
+Constants.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cogcomp/!svn/ver/10718/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/common/Constants.java
+END
+WordClusterManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/cogcomp/!svn/ver/10753/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/common/WordClusterManager.java
+END
+Document.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/cogcomp/!svn/ver/10617/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/common/Document.java
+END
+IOManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cogcomp/!svn/ver/10582/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/common/IOManager.java
+END

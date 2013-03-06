@@ -1,0 +1,113 @@
+package edu.illinois.cs.cogcomp.illinoisRE.data.ic;
+
+
+public class SemanticRelation {
+	private String id;
+	private String sentId; // belong to which sentence
+	private String coarseLabel, fineLabel; // relation type/label
+	private Mention m1, m2;
+
+	public SemanticRelation(String id) {
+		this.id = id;
+		sentId = null;
+		coarseLabel = null;
+		fineLabel = null;
+		m1 = null;
+		m2 = null;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setSentId(String id) {
+		sentId = id;
+	}
+
+	public String getSentId() {
+		return sentId;
+	}
+
+	public void setCoarseLabel(String label) {
+		// if(label.toLowerCase().compareTo("affiliation")==0) {
+		// this.coarseLabel = "emp-org";
+		// }
+		// else if(label.toLowerCase().compareTo("fam")==0) {
+		// this.coarseLabel = "per-soc";
+		// }
+		// else {
+		this.coarseLabel = label;
+		// }
+	}
+
+	public String getCoarseLabel() {
+		return coarseLabel;
+	}
+
+	public void setFineLabel(String label) {
+		/*
+		 * if(label.toLowerCase().compareTo("hassuborg")==0) { this.fineLabel =
+		 * "subsidiary"; } else
+		 * if(label.toLowerCase().compareTo("hasemployee")==0) { this.fineLabel
+		 * = "employ-staff"; } else
+		 * if(label.toLowerCase().compareTo("hasleader")==0) { this.fineLabel =
+		 * "employ-executive"; } else
+		 * if(label.toLowerCase().compareTo("hasmember")==0) { this.fineLabel =
+		 * "member-of-group"; } else
+		 * if(label.toLowerCase().compareTo("hassibling")==0) { this.fineLabel =
+		 * "family"; } else if(label.toLowerCase().compareTo("hasspouse")==0) {
+		 * this.fineLabel = "family"; } else
+		 * if(label.toLowerCase().compareTo("haschild")==0) { this.fineLabel =
+		 * "family"; } else { this.fineLabel = label; }
+		 */
+		this.fineLabel = label;
+	}
+
+	public String getFineLabel() {
+		return fineLabel;
+	}
+
+	public void setM1(Mention m) {
+		m1 = m;
+	}
+
+	public Mention getM1() {
+		return m1;
+	}
+
+	public void setM2(Mention m) {
+		m2 = m;
+	}
+
+	public Mention getM2() {
+		return m2;
+	}
+
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+		s.append("<r_id=\"");
+		s.append(id);
+		s.append("\"_arg1=\"");
+		if (m1 == null) {
+			s.append("null");
+		} else {
+			s.append(m1.getId());
+		}
+		s.append("\"_r=\"");
+		s.append(coarseLabel);
+		s.append(":");
+		s.append(fineLabel);
+		s.append("\"_arg2=\"");
+		if (m2 == null) {
+			s.append("null");
+		} else {
+			s.append(m2.getId());
+		}
+		s.append("\">");
+		return s.toString();
+	}
+}

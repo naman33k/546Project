@@ -1,0 +1,313 @@
+package edu.illinois.cs.cogcomp.illinoisRE.data.ic;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import edu.illinois.cs.cogcomp.core.datastructures.Pair;
+import edu.illinois.cs.cogcomp.illinoisRE.common.Constants;
+
+public class CleanICDoc {
+	private String id;
+	private String corpusId;
+	private ArrayList<SemanticRelation> relations;
+	private HashMap<Pair<Integer, Integer>, Mention> mentions;
+	private HashMap<Pair<Integer, Integer>, Mention> cleanMentions;
+	private String xmlText;
+	private String cleanText;
+	private ArrayList<String> rawText;
+	private ArrayList<String> annotatedText;
+	private ArrayList<String> annotatedLines;
+	private ArrayList<String> plainLines;
+	private ArrayList<ArrayList<Pair<Integer, String>>> lineTags;
+
+	public CleanICDoc() {
+		relations = new ArrayList<SemanticRelation>();
+		mentions = new HashMap<Pair<Integer, Integer>, Mention>();
+		annotatedLines = new ArrayList<String>();
+		cleanMentions = new HashMap<Pair<Integer, Integer>, Mention>();
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setCorpusId(String id) {
+		corpusId = id;
+	}
+
+	public String getCorpusId() {
+		return corpusId;
+	}
+
+	public void setRelations(ArrayList<SemanticRelation> relations) {
+		this.relations = relations;
+	}
+
+	public ArrayList<SemanticRelation> getRelations() {
+		return relations;
+	}
+
+	public void setMentions(HashMap<Pair<Integer, Integer>, Mention> mentions) {
+		this.mentions = mentions;
+	}
+
+	public HashMap<Pair<Integer, Integer>, Mention> getMentions() {
+		return mentions;
+	}
+
+	/**
+	 * @return the cleanMentions
+	 */
+	public HashMap<Pair<Integer, Integer>, Mention> getCleanMentions() {
+		return cleanMentions;
+	}
+
+	public void setRawText(ArrayList<String> text) {
+		rawText = text;
+	}
+
+	public ArrayList<String> getRawText() {
+		return rawText;
+	}
+
+	public void setAnnotatedText(ArrayList<String> text) {
+		annotatedText = text;
+	}
+
+	public ArrayList<String> getAnnotatedText() {
+		return annotatedText;
+	}
+
+	public void addAnnotatedLine(String line) {
+		annotatedLines.add(line);
+	}
+
+	public void setAnnotatedLines(ArrayList<String> lines) {
+		annotatedLines = lines;
+	}
+
+	public ArrayList<String> getAnnotatedLines() {
+		return annotatedLines;
+	}
+
+	public void setPlainLines(ArrayList<String> plainLines) {
+		this.plainLines = plainLines;
+	}
+
+	public ArrayList<String> getPlainLines() {
+		return plainLines;
+	}
+
+	public void setLineTags(ArrayList<ArrayList<Pair<Integer, String>>> lineTags) {
+		this.lineTags = lineTags;
+	}
+
+	public ArrayList<ArrayList<Pair<Integer, String>>> getLineTags() {
+		return lineTags;
+	}
+
+	public void printAnnotatedText() {
+		for (int i = 0; i < annotatedText.size(); i++) {
+			System.out.println(annotatedText.get(i));
+		}
+	}
+
+	public void printAnnotatedLines() {
+		System.out.println("<TEXT>");
+		for (int i = 0; i < annotatedLines.size(); i++) {
+			System.out.println(annotatedLines.get(i));
+		}
+		System.out.println("</TEXT>");
+	}
+
+	public void printRelations() {
+		System.out.println("<RELATION>");
+		for (int i = 0; i < relations.size(); i++) {
+			System.out.println(relations.get(i));
+		}
+		System.out.println("</RELATION>");
+	}
+
+	public ArrayList<String> getRelationStrings() {
+		ArrayList<String> s = new ArrayList<String>();
+		s.add("<RELATION>");
+		for (int i = 0; i < relations.size(); i++) {
+			s.add(relations.get(i).toString());
+		}
+		s.add("</RELATION>");
+		return s;
+	}
+
+	public String cleanRawText() {
+		cleanMentions = new HashMap<Pair<Integer, Integer>, Mention>();
+		StringBuffer buf = new StringBuffer();
+		for (String t : annotatedText) {
+			buf.append(t);
+			buf.append(" ");
+		}
+		xmlText = buf.toString();
+
+		// Remove XML tags
+		removeXMLTags();
+
+		// Standarize cleanText
+		cleanText = cleanText.trim();
+		cleanText = cleanText.replaceAll("\\s\\s+", " ");
+		// FIXME: currently TA cannot accept tab
+		// cleanText = cleanText.replaceAll("\\t+", " ");
+
+		// Remove mention tags
+		removeMentionTags();
+
+		return cleanText;
+	}
+
+	/**
+		 * 
+		 */
+	private void removeMentionTags() {
+		StringBuffer s = new StringBuffer(cleanText);
+		int b1 = s.indexOf("<e_id");
+		while (b1 != -1) {
+			// Get mention id
+			int p1 = s.indexOf("\"", b1 + 1);
+			int p2 = s.indexOf("\"", p1 + 1);
+			String mId = s.substring(p1 + 1, p2);
+
+			int e1 = s.indexOf(">", b1 + 1);
+			int b2 = s.indexOf("</e_id=\"" + mId + "\"", e1 + 1);
+			int e2 = s.indexOf(">", b2 + 1);
+			if (b2 == -1) {
+				b2 = s.indexOf(" ", e1 + 1);
+				e2 = b2;
+			}
+			if (e1 == -1 || b2 == -1 || e2 == -1) {
+				System.out
+						.println("ERROR: Unable to locate corresponding mention tags!");
+				System.out.println("Bug text: " + cleanText);
+				System.exit(1);
+			}
+
+			// Measuring mention length
+			StringBuffer temp = new StringBuffer(s.substring(b1, e2 + 1));
+			int x1 = temp.indexOf("<e_id");
+			while (x1 != -1) {
+				int x2 = temp.indexOf(">", x1 + 1);
+				temp.delete(x1, x2 + 1);
+				x1 = temp.indexOf("<e_id");
+			}
+			x1 = temp.indexOf("</e_id");
+			while (x1 != -1) {
+				int x2 = temp.indexOf(">", x1 + 1);
+				temp.delete(x1, x2 + 1);
+				x1 = temp.indexOf("</e_id");
+			}
+
+			int n = temp.length();
+
+			for (Pair<Integer, Integer> mKey : mentions.keySet()) {
+				Mention mention = mentions.get(mKey);
+				if (mention.getId().equals(mId)) {
+					Mention newM = new Mention(mention);
+					newM.setStartCharOffset(b1);
+					newM.setEndCharOffset(b1 + (n - 1));
+					cleanMentions.put(
+							new Pair<Integer, Integer>(newM
+									.getStartCharOffset(), newM
+									.getEndCharOffset()), newM);
+					break;
+				}
+			}
+			if (b2 < e2)
+				s.delete(b2, e2 + 1);
+			s.delete(b1, e1 + 1);
+
+			b1 = s.indexOf("<e_id");
+		}
+
+		cleanText = s.toString();
+
+		for (Pair<Integer, Integer> mKey : cleanMentions.keySet()) {
+			Mention mention = cleanMentions.get(mKey);
+			System.out
+					.println("("
+							+ mKey.getFirst()
+							+ ","
+							+ mKey.getSecond()
+							+ ") "
+							+ cleanText.substring(mention.getStartCharOffset(),
+									mention.getEndCharOffset() + 1)
+							+ " - "
+							+ cleanText.substring(mKey.getFirst(),
+									mKey.getSecond() + 1));
+		}
+
+		// Modifying the offsets of the mentions in the relations
+		for (SemanticRelation rel : relations) {
+			for (Pair<Integer, Integer> mKey : cleanMentions.keySet()) {
+				Mention mention = cleanMentions.get(mKey);
+				if (rel.getM1().getId().equals(mention.getId())) {
+					rel.setM1(mention);
+				}
+				if (rel.getM2().getId().equals(mention.getId())) {
+					rel.setM2(mention);
+				}
+			}
+		}
+	}
+
+	private void removeXMLTags() {
+		cleanText = xmlText.toString();
+
+		for (String tag : Constants.setXMLTags) {
+
+			// Dealing with "TEXT" later. This is for stripping off the junks
+			// before the "TEXT" tag.
+			if (tag.equals("TEXT"))
+				continue;
+
+			cleanText = cleanText.replaceAll("<" + tag + ".*?>", "");
+			cleanText = cleanText.replaceAll("</" + tag + ">", "");
+		}
+
+		int pos = cleanText.indexOf("<TEXT>");
+
+		cleanText = cleanText.replaceAll("<" + "TEXT" + ".*?>", "");
+		cleanText = cleanText.replaceAll("</" + "TEXT" + ">", "");
+
+		String subBegin = cleanText.substring(0, pos);
+		String subAfter = cleanText.substring(pos);
+
+		subBegin = subBegin.replaceAll(".", " ");
+
+		cleanText = subBegin + subAfter;
+
+	}
+
+	/**
+	 * @param mId
+	 * @param i
+	 * @param j
+	 */
+	public void addRelationMentionTokenOffset(String mId, int i, int j) {
+		for (SemanticRelation rel : relations) {
+			Mention m = rel.getM1();
+			if (m.getId().equals(mId)) {
+				m.setStartTokenOffset(i);
+				m.setEndTokenOffset(j);
+				rel.setM1(m);
+			}
+			m = rel.getM2();
+			if (m.getId().equals(mId)) {
+				m.setStartTokenOffset(i);
+				m.setEndTokenOffset(j);
+				rel.setM2(m);
+			}
+		}
+	}
+
+}

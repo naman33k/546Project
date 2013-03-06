@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cogcomp/!svn/ver/10646/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/data/ic
+END
+CleanDoc.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cogcomp/!svn/ver/10618/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/data/ic/CleanDoc.java
+END
+Mention.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/cogcomp/!svn/ver/10582/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/data/ic/Mention.java
+END
+CleanTextManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/cogcomp/!svn/ver/10617/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/data/ic/CleanTextManager.java
+END
+CleanICDoc.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/cogcomp/!svn/ver/10646/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/data/ic/CleanICDoc.java
+END
+SemanticRelation.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/cogcomp/!svn/ver/10582/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/data/ic/SemanticRelation.java
+END
+Util.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cogcomp/!svn/ver/10582/trunk/illinoisRelationExtration/src/edu/illinois/cs/cogcomp/illinoisRE/data/ic/Util.java
+END
