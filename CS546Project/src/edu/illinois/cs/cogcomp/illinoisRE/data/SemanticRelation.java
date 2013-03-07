@@ -7,12 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import CCMPackage.FeatureExtractor;
 import LBJ2.infer.Constraint;
 
 import edu.illinois.cs.cogcomp.core.datastructures.Pair;
 import edu.illinois.cs.cogcomp.edison.sentences.Sentence;
 import edu.illinois.cs.cogcomp.illinoisRE.common.Constants;
 import edu.illinois.cs.cogcomp.illinoisRE.data.Mention;
+import edu.illinois.cs.cogcomp.indsup.learning.LexManager;
 
 
 public class SemanticRelation implements Serializable {
@@ -413,37 +415,18 @@ public class SemanticRelation implements Serializable {
 			s.append(m2.getId());
 		}
 		s.append("\">\n");
-		s.append(convertToFeatureString());
+		//s.append(convertToFeatureString());
 		return s.toString();
 	}
 	
-	public String convertToFeatureString(){
+	public String convertToFeatureString(LexManager m){
 		String fstring = "";
-		int offset = 0;
 		//fstring+= coarseLabel + " ";
 		// Coarse Relation Label
-		int feat = offset+Constants.coarseRelationList.indexOf("m1-"+coarseLabel+"-m2");
-		fstring += feat;
-		// Entity 1 Label features
-		offset+=Constants.coarseRelationList.size();
-		feat = offset+Constants.coarseEntityList.indexOf(m1.getSC());
-		fstring += " "+feat;
-		
-		// Entity 2 Label features
-		offset+=Constants.coarseEntityList.size();
-		feat = offset+Constants.coarseEntityList.indexOf(m2.getSC());
-		fstring += " "+feat;
-		
-		//Entity 1 Head POS
-		offset+=Constants.coarseEntityList.size();
-		feat = offset+Constants.POSList.indexOf(m1.getHeadPos());
-		fstring += " "+feat;
-		
-		//Entity 2 Head POS
-		offset+=Constants.POSList.size();
-		feat = offset+Constants.POSList.indexOf(m2.getHeadPos());
-		fstring += " "+feat;
-				
+		String label = "Class"+Constants.coarseRelationList.indexOf("m1-"+coarseLabel+"-m2")+" ";
+		fstring += label;
+		String features = FeatureExtractor.extractFeaturesRelation(sentence, this, m);
+		fstring += features;		
 		return fstring;
 		
 	}

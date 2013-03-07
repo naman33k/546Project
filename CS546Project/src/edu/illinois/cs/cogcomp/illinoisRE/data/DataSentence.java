@@ -6,6 +6,7 @@ import edu.illinois.cs.cogcomp.edison.features.helpers.WordHelpers;
 import edu.illinois.cs.cogcomp.edison.sentences.Sentence;
 import edu.illinois.cs.cogcomp.edison.sentences.TextAnnotation;
 import edu.illinois.cs.cogcomp.edison.sentences.ViewNames;
+import edu.illinois.cs.cogcomp.indsup.learning.LexManager;
 
 public class DataSentence {
 
@@ -62,10 +63,10 @@ public class DataSentence {
 		return s;
 	}
 	
-	public String convertToRelationFeatures() {
+	public String convertToRelationFeatures(LexManager m){
 		String s = "";
 		for(SemanticRelation r: relations) {
-			s += r.convertToFeatureString()+"\n";
+			s += r.convertToFeatureString(m)+"\n";
 		}
 		return s;
 	}

@@ -14,6 +14,8 @@ import edu.illinois.cs.cogcomp.indsup.learning.LexManager;
 
 import java.io.*;
 
+import CCMPackage.CCM;
+
 public class Test {
 
 	/**
@@ -29,7 +31,7 @@ public class Test {
             System.exit(0);
         }
          */
-		
+		/*
 		String testFolderString = "test1";
 		File testFolder = new File(testFolderString);
 		String[] files = testFolder.list();
@@ -52,7 +54,7 @@ public class Test {
 			//System.out.println(d.convertToRelationFeatures());			
 			//System.out.println("End");
 		}
-		bw.close();
+		bw.close();*/
 		//System.out.println(Constants.coarseEntityList.toString());
 		//System.out.println(Constants.POSList.toString());
         //String file = "APW20001001.2021.0521";            
@@ -72,7 +74,9 @@ public class Test {
 		v = l.convertRawFeaMap2LRFeatures(M);
 		System.out.println(v.toString());
 		*/
-		
+		CCM c = new CCM();
+		c.train("test2");
+		System.out.println("Ended");
 	}
 
 }

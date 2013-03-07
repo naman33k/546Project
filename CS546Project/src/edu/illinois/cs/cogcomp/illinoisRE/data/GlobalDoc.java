@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import edu.illinois.cs.cogcomp.core.datastructures.Pair;
 import edu.illinois.cs.cogcomp.edison.sentences.Sentence;
 import edu.illinois.cs.cogcomp.illinoisRE.common.Document;
+import edu.illinois.cs.cogcomp.indsup.learning.LexManager;
 
 public class GlobalDoc {
 
@@ -67,10 +68,10 @@ public class GlobalDoc {
 		return r;
 	}
 	
-	public String convertToRelationFeatures(){
+	public String convertToRelationFeatures(LexManager m){
 		String r="";
 		for(DataSentence s: sentences) {
-			r += s.convertToRelationFeatures() + "\n";
+			r += s.convertToRelationFeatures(m) + "\n";
 		}
 		
 		return r;
