@@ -99,7 +99,7 @@ public class FeatureExtractor {
 		
 		
 		/* NO WORD in between */
-		if(M2_start-M1_end == 1)
+		if(M2_start-M1_end <= 1)
 			featureMap.put("WBNULL",1.0);
 		
 		/* One WORD in between */
@@ -135,10 +135,16 @@ public class FeatureExtractor {
 					sentence.getToken(M1_start -2 - startSpan),1.0);
 		
 		if(endSpan - M2_end >= 1){
+			System.out.println("Hello");
+			System.out.println(sentence.getText());
+			System.out.println(sentence.getToken(endSpan-startSpan-1));
+			System.out.println(Arrays.asList(sentence.getTokensInSpan(startSpan-startSpan, endSpan-startSpan)));			
 			System.out.println(M2.getSurfaceString());
-			System.out.println(sentence.getToken(M2_end - startSpan));
+			System.out.println(M1.getSurfaceString());
+			System.out.println(sentence.getToken(M2.getEndTokenOffset() - startSpan));
+			System.out.println(sentence.getToken(M1.getEndTokenOffset() - startSpan));
 			featureMap.put("AM2F" + FEATURE_TYPE_DELIMITER + 
-					sentence.getToken(endSpan - 1 - M2_end + 1),1.0);}
+					sentence.getToken(M2_end - startSpan + 1),1.0);}
 		
 		if(endSpan - M2_end >= 2)
 			featureMap.put("AM2L" + FEATURE_TYPE_DELIMITER + 
