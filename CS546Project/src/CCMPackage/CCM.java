@@ -17,6 +17,7 @@ import edu.illinois.cs.cogcomp.illinoisRE.data.DataLoader;
 import edu.illinois.cs.cogcomp.illinoisRE.data.GlobalDoc;
 import edu.illinois.cs.cogcomp.indsup.learning.FeatureVector;
 import edu.illinois.cs.cogcomp.indsup.learning.LexManager;
+import edu.illinois.cs.cogcomp.indsup.mc.main.AllTest;
 
 public class CCM {
 	public LexManager m;
@@ -66,15 +67,28 @@ public class CCM {
 		return fileNamesWOExtension;
 	}
 	
-	public void train(String CorpusFolder) throws IOException{
+	public void trainLI(String CorpusFolder) throws IOException{
 		/// I have to write these functions :) :)		
 		Set<String> fileNamesWOExtension = removeFileExtensions(CorpusFolder);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(CorpusFolder + "TrainResults" + "/" +"features"));
 		for (String f :fileNamesWOExtension){			
 			GlobalDoc d = DataLoader.readACEData2(CorpusFolder + "/" + f);
 			d.process();
-			bw.write(d.convertToRelationFeatures(m));
+			String relationFeatures = d.convertToRelationFeatures(m); 
+			//System.out.println(relationFeatures);
+			bw.write(relationFeatures);
+			//System.out.println(d.toString());
 		}
+		bw.close();
+		/*for(int i=1;i<=m.totalNumofFeature();i++){
+			System.out.println(m.getFeatureString(i));
+		}*/
+	}
+	
+	public void crossValidate(String CorpusFolder) throws Exception{
+		trainLI(CorpusFolder);
+		String trainDataFile = CorpusFolder + "TrainResults" + "/" +"features";
+		AllTest.crossValidationMultiClass(trainDataFile, "10", "1", "5");
 	}
 	
 	public static void test(){

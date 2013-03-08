@@ -11,6 +11,7 @@ import edu.illinois.cs.cogcomp.illinoisRE.data.GlobalDoc;
 import edu.illinois.cs.cogcomp.illinoisRE.data.Mention;
 import edu.illinois.cs.cogcomp.indsup.learning.FeatureVector;
 import edu.illinois.cs.cogcomp.indsup.learning.LexManager;
+import edu.illinois.cs.cogcomp.indsup.mc.main.AllTest;
 
 import java.io.*;
 
@@ -20,9 +21,9 @@ public class Test {
 
 	/**
 	 * @param args
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		
 		//String file = "/home/wieting2/TIDES-Extraction-2004-Training-Data-V1.4/English/nwire/APW20001007.1745.0371";
          /*
@@ -75,8 +76,10 @@ public class Test {
 		System.out.println(v.toString());
 		*/
 		CCM c = new CCM();
-		c.train("test2");
+		//c.trainLI("test2");
+		c.crossValidate("test2");
 		System.out.println("Ended");
+		
 	}
 
 }

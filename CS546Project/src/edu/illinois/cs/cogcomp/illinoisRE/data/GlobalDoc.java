@@ -71,7 +71,7 @@ public class GlobalDoc {
 	public String convertToRelationFeatures(LexManager m){
 		String r="";
 		for(DataSentence s: sentences) {
-			r += s.convertToRelationFeatures(m) + "\n";
+			r += s.convertToRelationFeatures(m);
 		}
 		
 		return r;

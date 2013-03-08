@@ -50,14 +50,14 @@ public class FeatureExtractor {
 		BM1L: second word before M1
 		AM2F: first word after M2
 		AM2L: second word after M2
-
+        WBON: number of words in between
 	 ** 
 	 */
 	
 	public static void addWordFeatures(Sentence sentence, Mention M1, Mention M2,Map<String,Double> featureMap)	{
-		/* Handle the case where the first argument comes after second arguement */
+		/* Handle the case where the first argument comes after second argument */
 		int M1_end, M2_start, M2_end, M1_start ;
-		if(M1.getStartTokenOffset() < M2.getStartTokenOffset()) {
+		if(M1earlier(M1,M2)) {
 			M1_start = M1.getStartTokenOffset();
 			M1_end = M1.getEndTokenOffset();
 			M2_start = M2.getStartTokenOffset();
@@ -99,31 +99,48 @@ public class FeatureExtractor {
 		
 		
 		/* NO WORD in between */
-		if(M2_start-M1_end <= 1)
+		if(M2_start-M1_end <= 1){
 			featureMap.put("WBNULL",1.0);
-		
+			featureMap.put("WBON"+ FEATURE_TYPE_DELIMITER +"0",1.0);
+		}
 		/* One WORD in between */
-		else if(M2_start-M1_end == 2)						
+		else if(M2_start-M1_end == 2){						
 			featureMap.put("WBFL" + FEATURE_TYPE_DELIMITER + 
 					sentence.getToken(M1_end + 1 - startSpan),1.0);			
-		
+			featureMap.put("WBON"+ FEATURE_TYPE_DELIMITER +"1",1.0);
+		}
 		
 		/* Atleast 2 words in between */
 		else if(M2_start-M1_end >= 3) {			
+			System.out.println("Hello");
+			System.out.println(sentence.getText());
+			System.out.println(startSpan);
+			System.out.println(M1_end);
+			System.out.println(sentence.getToken(endSpan-startSpan-1));
+			System.out.println(Arrays.asList(sentence.getTokensInSpan(startSpan-startSpan, endSpan-startSpan)));			
+			System.out.println(M2.getSurfaceString());
+			System.out.println(M1.getSurfaceString());
+			System.out.println(sentence.getToken(M2.getEndTokenOffset() - startSpan));
+			System.out.println(sentence.getToken(M1.getEndTokenOffset() - startSpan));
+			
 			featureMap.put("WBF" + FEATURE_TYPE_DELIMITER + 
 					sentence.getToken(M1_end + 1 - startSpan),1.0);
 			
 			featureMap.put("WBL" + FEATURE_TYPE_DELIMITER + 
 					sentence.getToken(M2_start - 1 - startSpan),1.0);
+			featureMap.put("WBON"+ FEATURE_TYPE_DELIMITER +"2",1.0);
 		}
 		
 		/* Atleast 3 words in between */
 		if(M2_start-M1_end >= 4) {			
 			
-			String[] tokensInBtwn = sentence.getTokensInSpan(M1_end + 2 - startSpan, M2_start - 2 - startSpan);
+			String[] tokensInBtwn = sentence.getTokensInSpan(M1_end + 2 - startSpan, M2_start - 1 - startSpan);
 			List<String> listofTokens = Arrays.asList(tokensInBtwn);
 			for(String word : getBagOfWords(listofTokens))
 				featureMap.put("WBO" + FEATURE_TYPE_DELIMITER + word,1.0);			
+			featureMap.remove("WBON"+ FEATURE_TYPE_DELIMITER +"2");
+			int size = 2 + listofTokens.size();
+			featureMap.put("WBON"+ FEATURE_TYPE_DELIMITER +size,1.0);
 		}
 		
 		if (M1_start - startSpan >=1)
@@ -134,21 +151,21 @@ public class FeatureExtractor {
 			featureMap.put("BM1L" + FEATURE_TYPE_DELIMITER + 
 					sentence.getToken(M1_start -2 - startSpan),1.0);
 		
-		if(endSpan - M2_end >= 1){
-			System.out.println("Hello");
+		if(endSpan - M2_end >= 2){
+			/*System.out.println("Hello");
 			System.out.println(sentence.getText());
 			System.out.println(sentence.getToken(endSpan-startSpan-1));
 			System.out.println(Arrays.asList(sentence.getTokensInSpan(startSpan-startSpan, endSpan-startSpan)));			
 			System.out.println(M2.getSurfaceString());
 			System.out.println(M1.getSurfaceString());
 			System.out.println(sentence.getToken(M2.getEndTokenOffset() - startSpan));
-			System.out.println(sentence.getToken(M1.getEndTokenOffset() - startSpan));
+			System.out.println(sentence.getToken(M1.getEndTokenOffset() - startSpan));*/
 			featureMap.put("AM2F" + FEATURE_TYPE_DELIMITER + 
 					sentence.getToken(M2_end - startSpan + 1),1.0);}
 		
-		if(endSpan - M2_end >= 2)
+		if(endSpan - M2_end >= 3)
 			featureMap.put("AM2L" + FEATURE_TYPE_DELIMITER + 
-					sentence.getToken(endSpan - 1 - M2_end + 2),1.0);
+					sentence.getToken(M2_end - startSpan + 2),1.0);
 	}
 	
 	/*
@@ -158,9 +175,22 @@ public class FeatureExtractor {
 	 * 
 	 */
 	
+	public static Boolean M1earlier(Mention M1,Mention M2){
+		if(M1.getStartTokenOffset() < M2.getStartTokenOffset()) {
+			return true;
+		}
+		else if(M1.getEndTokenOffset() < M2.getEndTokenOffset() && M1.getStartTokenOffset() == M2.getStartTokenOffset()){
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
 	public static void addOverlapFeatures(Sentence sentence, Mention M1, Mention M2,Map<String,Double> featureMap){
 		int M1_end, M2_start, M2_end, M1_start ;
-		if(M1.getStartTokenOffset() < M2.getStartTokenOffset()) {
+		if(M1earlier(M1,M2)) {
 			M1_start = M1.getStartTokenOffset();
 			M1_end = M1.getEndTokenOffset();
 			M2_start = M2.getStartTokenOffset();
@@ -177,7 +207,7 @@ public class FeatureExtractor {
 		
 		int startSpan = sentence.getStartSpan();
 		int endSpan = sentence.getEndSpan();
-		
+		//int overlapEnd = (M1_end - M2_end > 0) ? M2_end : M1_end; 
 		if(overlap){
 			featureMap.put("BOVP", 1.0);
 			for(int i=M2_start;i<=M1_end;i++){

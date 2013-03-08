@@ -66,7 +66,7 @@ public class DataSentence {
 	public String convertToRelationFeatures(LexManager m){
 		String s = "";
 		for(SemanticRelation r: relations) {
-			s += r.convertToFeatureString(m)+"\n";
+			s += r.convertToFeatureString(m);
 		}
 		return s;
 	}

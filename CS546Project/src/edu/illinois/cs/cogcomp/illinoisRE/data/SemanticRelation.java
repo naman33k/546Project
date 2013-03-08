@@ -426,7 +426,7 @@ public class SemanticRelation implements Serializable {
 		String label = "Class"+Constants.coarseRelationList.indexOf("m1-"+coarseLabel+"-m2")+" ";
 		fstring += label;
 		String features = FeatureExtractor.extractFeaturesRelation(sentence, this, m);
-		fstring += features;		
+		fstring += features.trim()+"\n";		
 		return fstring;
 		
 	}
