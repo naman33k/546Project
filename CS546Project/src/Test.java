@@ -11,6 +11,7 @@ import edu.illinois.cs.cogcomp.illinoisRE.data.GlobalDoc;
 import edu.illinois.cs.cogcomp.illinoisRE.data.Mention;
 import edu.illinois.cs.cogcomp.indsup.learning.FeatureVector;
 import edu.illinois.cs.cogcomp.indsup.learning.LexManager;
+import edu.illinois.cs.cogcomp.indsup.mc.MulticlassModel;
 import edu.illinois.cs.cogcomp.indsup.mc.main.AllTest;
 
 import java.io.*;
@@ -77,7 +78,9 @@ public class Test {
 		*/
 		CCM c = new CCM();
 		//c.trainLI("test2");
-		c.crossValidate("test2");
+		//c.crossValidate("test2");
+		c.trainLI("test2", "10", "1");
+		c.test("testFile");
 		System.out.println("Ended");
 		
 	}
