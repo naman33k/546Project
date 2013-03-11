@@ -17,6 +17,7 @@ import edu.illinois.cs.cogcomp.indsup.mc.main.AllTest;
 import java.io.*;
 
 import CCMPackage.CCM;
+import CCMPackage.MultiClassModel;
 
 public class Test {
 
@@ -76,11 +77,15 @@ public class Test {
 		v = l.convertRawFeaMap2LRFeatures(M);
 		System.out.println(v.toString());
 		*/
+		
+		
+		
 		CCM c = new CCM();
 		//c.trainLI("test2");
 		//c.crossValidate("test2");
-		c.trainLI("test2", "10", "1");
-		c.test("testFile");
+		//c.trainLI("test2", "10", "1");
+		MultiClassModel model = c.trainLIPerceptronNative("test2", 1.0, 5.0);
+		model.toString();
 		System.out.println("Ended");
 		
 	}

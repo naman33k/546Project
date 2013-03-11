@@ -241,7 +241,18 @@ public class FeatureExtractor {
 		return v.toString();
 	}
 	
-	
+	public static FeatureVector extractFeatureVectorRelation(Sentence sent, SemanticRelation reln,LexManager l)
+	{
+		Mention M1 = reln.getM1();
+		Mention M2 = reln.getM2();
+		Map<String,Double> featureMap = new HashMap<String,Double>(); 
+		addWordFeatures(sent, M1, M2,featureMap);
+		addEntityTypeFeatures(M1, M2,featureMap);
+		addMentionLevelFeatures(M1, M2,featureMap);
+		addOverlapFeatures(sent, M1, M2,featureMap);
+		FeatureVector v = l.convertRawFeaMap2LRFeatures(featureMap);
+		return v;
+	}
 	
 	/* Function to remove the extensions from the file Names like .sgm, .xml etc */
 	

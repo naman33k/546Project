@@ -430,6 +430,10 @@ public class SemanticRelation implements Serializable {
 		return fstring;
 		
 	}
+	
+	public int getLabel(){
+		return Constants.coarseRelationList.indexOf("m1-"+coarseLabel+"-m2");
+	}
 }
 
 
