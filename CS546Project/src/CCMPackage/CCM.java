@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -188,11 +186,11 @@ public class CCM {
 		return new Pair<FeatureVector[], Integer[]>(fv, labels);
 	}
 	
-	public MultiClassModel trainLIPerceptronNative(String CorpusFolder, double regParam, double stopParam){
+	/*public MultiClassModel trainLIPerceptronNative(String CorpusFolder, double regParam, double stopParam){
 		Pair<FeatureVector[],Integer[]> p = fetchLabelsAndFV(CorpusFolder);
 		MultiClassModel model = Learner.trainPercepetronMultiClassOvA(p.getFirst(), p.getSecond(), regParam, stopParam, m, Constants.coarseRelationList.size());
 		return model;
-	}
+	}*/
 	
 	
 	public void trainLI(String CorpusFolder,String C_st_str, String n_thread_str) throws Exception{
