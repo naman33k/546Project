@@ -1,6 +1,5 @@
 package CCMPackage;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,9 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.illinois.cs.cogcomp.edison.sentences.Sentence;
-import edu.illinois.cs.cogcomp.illinoisRE.data.DataLoader;
-import edu.illinois.cs.cogcomp.illinoisRE.data.DataSentence;
-import edu.illinois.cs.cogcomp.illinoisRE.data.GlobalDoc;
 import edu.illinois.cs.cogcomp.illinoisRE.data.Mention;
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation;
 import edu.illinois.cs.cogcomp.indsup.learning.FeatureVector;
@@ -112,7 +108,7 @@ public class FeatureExtractor {
 		
 		/* Atleast 2 words in between */
 		else if(M2_start-M1_end >= 3) {			
-			System.out.println("Hello");
+			/*System.out.println("Hello");
 			System.out.println(sentence.getText());
 			System.out.println(startSpan);
 			System.out.println(M1_end);
@@ -121,7 +117,7 @@ public class FeatureExtractor {
 			System.out.println(M2.getSurfaceString());
 			System.out.println(M1.getSurfaceString());
 			System.out.println(sentence.getToken(M2.getEndTokenOffset() - startSpan));
-			System.out.println(sentence.getToken(M1.getEndTokenOffset() - startSpan));
+			System.out.println(sentence.getToken(M1.getEndTokenOffset() - startSpan));*/
 			
 			featureMap.put("WBF" + FEATURE_TYPE_DELIMITER + 
 					sentence.getToken(M1_end + 1 - startSpan),1.0);
@@ -206,7 +202,7 @@ public class FeatureExtractor {
 		Boolean overlap = M1_end >= M2_start;
 		
 		int startSpan = sentence.getStartSpan();
-		int endSpan = sentence.getEndSpan();
+		
 		//int overlapEnd = (M1_end - M2_end > 0) ? M2_end : M1_end; 
 		if(overlap){
 			featureMap.put("BOVP", 1.0);
@@ -230,15 +226,8 @@ public class FeatureExtractor {
 	
 	public static String extractFeaturesRelation(Sentence sent, SemanticRelation reln,LexManager l)
 	{
-		Mention M1 = reln.getM1();
-		Mention M2 = reln.getM2();
-		Map<String,Double> featureMap = new HashMap<String,Double>(); 
-		addWordFeatures(sent, M1, M2,featureMap);
-		addEntityTypeFeatures(M1, M2,featureMap);
-		addMentionLevelFeatures(M1, M2,featureMap);
-		addOverlapFeatures(sent, M1, M2,featureMap);
-		FeatureVector v = l.convertRawFeaMap2LRFeatures(featureMap);
-		return v.toString();
+		
+		return extractFeatureVectorRelation(sent, reln, l).toString();
 	}
 	
 	public static FeatureVector extractFeatureVectorRelation(Sentence sent, SemanticRelation reln,LexManager l)
@@ -253,8 +242,6 @@ public class FeatureExtractor {
 		FeatureVector v = l.convertRawFeaMap2LRFeatures(featureMap);
 		return v;
 	}
-	
-	/* Function to remove the extensions from the file Names like .sgm, .xml etc */
 	
 	
 }

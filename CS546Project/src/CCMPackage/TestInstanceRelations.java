@@ -11,6 +11,7 @@ public class TestInstanceRelations {
 	private double[] costs;
 	private double[] softCons;
 	private double[][] HardCons;
+	
 	public TestInstanceRelations(SemanticRelation sr,double[] costs){
 		this.sr = sr;
 		this.costs = costs;
