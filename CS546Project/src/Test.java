@@ -19,6 +19,7 @@ import java.io.*;
 
 import CCMPackage.CCM;
 import CCMPackage.MultiClassModel;
+import CCMPackage.SNOWInterface;
 
 public class Test {
 
@@ -42,7 +43,7 @@ public class Test {
 		CCM c = new CCM();
 		c.trainLISnow(trainFolder);
 		c.testRelationsSNOW(testFolder, testOutputFileName);
-		Task1Eval eval = new Task1Eval(testOutputFileName, testFolder);
+		Task1Eval eval = new Task1Eval(CCM.OUTPUT_PATH+testOutputFileName, testFolder+"/");
         eval.evaluate();
 	}
 

@@ -22,8 +22,8 @@ public class CCMConstraints {
 		/// Basic Hard Constraints
 		
 		/// all labels should sum to 1. Equality Constraint. 2 Constraints
-		double hc1[] = initZerosArray(numClasses);				
-		double hc2[] = initZerosArray(numClasses);
+		double hc1[] = initZerosArray(numClasses+1);				
+		double hc2[] = initZerosArray(numClasses+1);
 		for(int i=0;i<numClasses;i++){
 			hc1[i] = 1.0;
 			hc2[i] = -1.0;
@@ -36,7 +36,7 @@ public class CCMConstraints {
 		
 		/// all labels should be less than 1. numClasses constraints
 		for(int i=0;i<numClasses;i++){
-			double hct[] = initZerosArray(numClasses);
+			double hct[] = initZerosArray(numClasses+1);
 			hct[i] = 1.0;
 			hct[numClasses] = -1.0;
 			hc.add(hct);
@@ -45,7 +45,7 @@ public class CCMConstraints {
 	    
 	   /// all labels should be greater than 0. numClasses constraints
 	    for(int i=0;i<numClasses;i++){
-			double hct[] = initZerosArray(numClasses);
+			double hct[] = initZerosArray(numClasses+1);
 			hct[i] = -1.0;
 			hc.add(hct);
 		}
@@ -58,9 +58,9 @@ public class CCMConstraints {
 	    
 	    ///////////////////////////////////////////////////////////////////////////////////////////
 	    
-	    double[][] ConstMatrix = new double[hc.size()][numClasses];
+	    double[][] ConstMatrix = new double[hc.size()][numClasses+1];
 	    for(int i=0;i<hc.size();i++){
-	    	for(int j=0;j<numClasses;j++){
+	    	for(int j=0;j<numClasses+1;j++){
 	    		ConstMatrix[i][j] = hc.get(i)[j];
 	    	}
 	    }

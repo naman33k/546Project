@@ -1,5 +1,6 @@
 package CCMPackage;
 
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -21,6 +22,7 @@ import edu.illinois.cs.cogcomp.illinoisRE.data.Mention;
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation;
 import edu.illinois.cs.cogcomp.indsup.learning.FeatureVector;
 import edu.illinois.cs.cogcomp.indsup.learning.LexManager;
+import evaluation.StatisticsRelation;
 
 public class CCM {
 	public LexManager m;
@@ -64,20 +66,67 @@ public class CCM {
 		for (String f :fileNamesWOExtension){			
 			GlobalDoc d = DataLoader.readACEData2(CorpusFolder + "/" + f);
 			d.process();
-			String relationFeatures = d.convertToRelationFeatures(m); 
 			
+			String relationFeatures = d.convertToRelationFeatures(m);
 			bw.write(relationFeatures);
 			
 		}
 		bw.close();
 		
 	}	
-			
-	public void trainLISnow(String CorpusFolder) throws IOException
+	
+	public void generateFeaturesFileTrainWithNULL(String CorpusFolder) throws IOException{
+		String outputfile = FEATURE_FILE_PREFIX + "train";
+		Set<String> fileNamesWOExtension = Utils.removeFileExtensions(CorpusFolder);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(outputfile));
+		for (String f :fileNamesWOExtension){			
+			GlobalDoc d = DataLoader.readACEData2(CorpusFolder + "/" + f);
+			d.process();
+			for(DataSentence s: d.sentences) {
+				ArrayList<Mention> mentionsInSent = s.mentions;
+				int numMentions = mentionsInSent.size();
+				/*System.out.println("Total Mentions" + numMentions);
+				System.out.println("Total Relations" + s.relations.size());
+				// Get the set of all mentions in a sentence and get list of 2 * NC2 relations
+				int count = 0;*/
+				for(int i= 0; i < numMentions; i++)
+					for(int j = i+1 ; j < numMentions; j++) {
+						Mention M1 = mentionsInSent.get(i);
+						Mention M2 = mentionsInSent.get(j);
+						SemanticRelation r = Utils.getRelation(M1.getId(), M2.getId(), s);
+						
+						if(r==null){
+							r = new SemanticRelation(M1, M2, s.sentence, s.sentence.getSentenceId());
+							//count++;
+						}
+						bw.write(r.convertToFeatureString(m));
+						SemanticRelation r1 = Utils.getRelation(M2.getId(), M1.getId(), s);
+						if(r1==null){
+							r1 = new SemanticRelation(M2, M1, s.sentence, s.sentence.getSentenceId());						
+							//count++;
+						}
+						bw.write(r1.convertToFeatureString(m));
+					}
+				
+				//System.out.println("Total NULL Relations" + count);
+			}															
+		}
+		bw.close();
+		
+	}
+	
+	
+	public void trainLISnow(String CorpusFolder) throws IOException, InterruptedException
 	{				
-		generateFeaturesFileTrain(CorpusFolder);
+		System.out.println("Start : Train Features File Generation .... ");
+		generateFeaturesFileTrainWithNULL(CorpusFolder);
+		System.out.println("End : Train Features File Generation .... ");
+		
 		String trainDataFileName = FEATURE_FILE_PREFIX + "train";
+		
+		System.out.println("Start : Learn with SNOW .... ");
 		SNOWInterface.learnSNOW(trainDataFileName, SNOW_MODEL_FILE_NAME);
+		System.out.println("END : Learn with SNOW .... ");
 	}
 	
 	
@@ -90,14 +139,18 @@ public class CCM {
 		for (String f :fileNamesWOExtension){			
 			GlobalDoc d = DataLoader.readACEData2(testFolder + "/" + f);
 			d.process();
+			
 			for(DataSentence s: d.sentences) {
 				ArrayList<Mention> mentionsInSent = s.mentions;
 				int numMentions = mentionsInSent.size();
-				/* Get the set of all mentions in a sentence and get list of 2 * NC2 relations */
+				
+				// Get the set of all mentions in a sentence and get list of 2 * NC2 relations
 				for(int i= 0; i < numMentions; i++)
 					for(int j = i+1 ; j < numMentions; j++) {
-						SemanticRelation sr1 = new SemanticRelation(mentionsInSent.get(i), mentionsInSent.get(j));
-						SemanticRelation sr2 = new SemanticRelation(mentionsInSent.get(j), mentionsInSent.get(i));
+						Mention M1 = mentionsInSent.get(i);
+						Mention M2 = mentionsInSent.get(j);
+						SemanticRelation sr1 = new SemanticRelation(M1, M2, s.sentence, s.sentence.getSentenceId());
+						SemanticRelation sr2 = new SemanticRelation(M2, M1, s.sentence, s.sentence.getSentenceId());
 						
 						testRelations.add(new CustomPair<SemanticRelation, String>(sr1,f));
 						testRelations.add(new CustomPair<SemanticRelation, String>(sr2,f));
@@ -105,6 +158,7 @@ public class CCM {
 			}
 			
 		}
+			
 		
 		return testRelations;
 	}
@@ -123,26 +177,40 @@ public class CCM {
 		String testDataFileName = FEATURE_FILE_PREFIX + "test";
 		BufferedWriter bw = new BufferedWriter(new FileWriter(OUTPUT_PATH+testOutputFileName));
 		
+		System.out.println("Start : Get Test Relations ....");
 		List<CustomPair<SemanticRelation, String>> sr = getTestRelations(testFolder);
-		generateFeaturesFileTest(sr);
+		System.out.println("End : Get Test Relations ....");
 		
+		System.out.println("Start : Generate Test Features File ....");
+		generateFeaturesFileTest(sr);
+		System.out.println("End : Generate Test Features File ....");
+		
+		System.out.println("Start : Get SNOW scores for TEST ....");
 		double[][] scores = SNOWInterface.getSNOWScores(testDataFileName, SNOW_SCORE_FILE_NAME, 
 				SNOW_MODEL_FILE_NAME, sr.size());
+		System.out.println("END : Get SNOW scores for TEST ....");
+		
 		int numClasses = scores[0].length;
 		
 		int i=0;
-		List<String> coarseRelations = Constants.coarseRelationList;
+		
+		System.out.println("Start : Predict Labels ....");
+		
+		//List<String> fineRelations = Constants.fineRelationList;
 		for(CustomPair<SemanticRelation, String> pair : sr){
 			SemanticRelation rel = pair.getL();
 			TestInstanceRelations ti = new TestInstanceRelations(rel,scores[i]);
-			int resultLabels = ti.test(numClasses);
-			String line = pair.getR() + ", " + coarseRelations.get(resultLabels) + ", " + 
+			int resultIndex = ti.test(numClasses);
+			String line = pair.getR() + ", " + Labels.mapRelationItoS(resultIndex) + ", " + 
 						rel.getM1().getId() + ", "+ rel.getM2().getId() + ", " + rel.getSentenceId();
 			line += "\n";
 			
 			bw.write(line);
+			
 			i++;
+			System.out.println("Predicting for " + i + "/" + sr.size());
 		}
+		System.out.println("End : Predict Labels ....");
 		bw.close();
 	}
 }
@@ -195,7 +263,7 @@ public MultiClassModel trainLIPerceptronNative(String CorpusFolder, double regPa
 	}
 	
 public Pair<FeatureVector[],Integer[]> fetchLabelsAndFV(String CorpusFolder){
-		//String outputfile = CorpusFolder + "TrainResults" + "/" +"features";
+		//String outputfile = CorpusFolhttps://github.com/naman33k/546Project.gitder + "TrainResults" + "/" +"features";
 		Set<String> fileNamesWOExtension = removeFileExtensions(CorpusFolder);
 		//BufferedWriter bw = new BufferedWriter(new FileWriter(outputfile));
 		List<FeatureVector> fvl = new ArrayList<FeatureVector>();
@@ -219,7 +287,7 @@ public Pair<FeatureVector[],Integer[]> fetchLabelsAndFV(String CorpusFolder){
 		Integer[] labels = labelsL.toArray(new Integer[0]);
 		return new Pair<FeatureVector[], Integer[]>(fv, labels);
 	}
-	public static double[] getCostWeights(MulticlassModel model){
+	public static double[] getCostWeighhttps://github.com/naman33k/546Project.gitts(MulticlassModel model){
 		return null;	
 		
 		

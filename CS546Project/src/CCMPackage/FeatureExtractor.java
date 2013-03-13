@@ -227,7 +227,15 @@ public class FeatureExtractor {
 	public static String extractFeaturesRelation(Sentence sent, SemanticRelation reln,LexManager l)
 	{
 		
-		return extractFeatureVectorRelation(sent, reln, l).toString();
+		FeatureVector v = extractFeatureVectorRelation(sent, reln, l);
+		int[] indices = v.getIdx();
+		String featureString = "";
+		for(int i=0;i<indices.length - 1;i++) featureString += indices[i] + ", ";
+		featureString+= indices[indices.length-1] + ":";
+		//String featureString = extractFeatureVectorRelation(sent, reln, l).toString().trim();
+		//featureString=featureString.replaceAll(":1.0", ",");
+		
+		return featureString;
 	}
 	
 	public static FeatureVector extractFeatureVectorRelation(Sentence sent, SemanticRelation reln,LexManager l)

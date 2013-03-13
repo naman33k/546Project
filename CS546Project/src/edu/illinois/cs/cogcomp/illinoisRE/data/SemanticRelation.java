@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import CCMPackage.FeatureExtractor;
+import CCMPackage.Labels;
 import LBJ2.infer.Constraint;
 
 import edu.illinois.cs.cogcomp.core.datastructures.Pair;
@@ -77,6 +78,28 @@ public class SemanticRelation implements Serializable {
 		premodAccept = false;	premodReject = false;	possAccept = false;	possReject = false;	prepAccept = false;	prepReject = false;
 		formulaAccept = false;	formulaReject = false;	verbalAccept = false;	verbalReject = false;
 	}
+	
+	public SemanticRelation(Mention m1, Mention m2, Sentence s, int sId) {
+		id = new String("dummy");
+		docid = null;
+		this.m1 = m1;
+		this.m2 = m2;
+		sentence = s;
+		sentenceId = sId;
+		coarseLabel = new String("Null");
+		fineLabel = new String("Null");
+		this.scores = new ArrayList<Pair<String, Double>>();
+		surfaceString = null;
+		startCharOffset = endCharOffset = -1;
+		lexicalCondition = null;
+		prepFeatures = null;
+		implicitFineLabels = null;
+		premod_isPartOfWikiTitle = false;
+		premod_isWordNetNounCollocation = false;
+		premodAccept = false;	premodReject = false;	possAccept = false;	possReject = false;	prepAccept = false;	prepReject = false;
+		formulaAccept = false;	formulaReject = false;	verbalAccept = false;	verbalReject = false;
+	}
+
 
 	public void setId(String id) {
 		this.id = id;
@@ -419,21 +442,20 @@ public class SemanticRelation implements Serializable {
 		return s.toString();
 	}
 	
+	/*****************/
+	/* Added by NAMAN*/
+	/*****************/
 	public String convertToFeatureString(LexManager m){
 		String fstring = "";
-		//fstring+= coarseLabel + " ";
-		// Coarse Relation Label
-		String label = "Class"+Constants.coarseRelationList.indexOf("m1-"+coarseLabel+"-m2")+" ";
+		
+		String label = Labels.mapRelationStoI(fineLabel) + ", ";
 		fstring += label;
 		String features = FeatureExtractor.extractFeaturesRelation(sentence, this, m);
-		fstring += features.trim()+"\n";		
+		fstring += features +"\n";		
 		return fstring;
 		
 	}
 	
-	public int getLabel(){
-		return Constants.coarseRelationList.indexOf("m1-"+coarseLabel+"-m2");
-	}
 }
 
 

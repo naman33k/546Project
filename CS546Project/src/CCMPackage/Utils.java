@@ -1,13 +1,18 @@
 package CCMPackage;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.illinois.cs.cogcomp.illinoisRE.data.DataSentence;
+import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation;
+
 public class Utils {
 	public static void print2DArray(double[][] arr){
+		
 		for(int i=0;i<arr.length;i++){
-			for(int j=0;i<arr.length;j++){
+			for(int j=0;j<arr[0].length;j++){
 				System.out.print(arr[i][j] + " ");
 			}
 			System.out.println();
@@ -44,5 +49,29 @@ public class Utils {
 			 fileNamesWOExtension.add(cleanFilename.split("-")[0]);						 
 		}
 		return fileNamesWOExtension;
+	}
+	public static SemanticRelation getRelation(String mid1, String mid2, DataSentence s) {
+		
+		ArrayList<SemanticRelation> relations = s.relations;
+		
+		SemanticRelation r = null;
+		
+		for(SemanticRelation sr : relations) {
+			String m1 = sr.getM1().getId();
+			String m2 = sr.getM2().getId();
+			
+			if(m1.equals(mid1) && m2.equals(mid2)) {
+				r = sr;
+			}
+		}
+		
+		return r;
+	}
+	public static double[] sumDoubleArray(double[] a,double[] b){
+		double[] sum = new double[a.length];
+		for(int i=0;i<a.length;i++){
+			sum[i]=a[i]+b[i];
+		}
+		return sum;
 	}
 }

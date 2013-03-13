@@ -35,6 +35,7 @@ public class StatisticsRelation {
 				int ri = mapStoI(pred);
 				
 				if(gi == ri) {
+					//System.out.println("COrrect NON NULL");
 					stats[gi][0]++;
 					for(int i =0; i < stats.length; i++) {
 						if(i != gi) {
@@ -45,7 +46,7 @@ public class StatisticsRelation {
 					notfound = false;
 				}
 				else {
-					System.out.println("E:"+d.cdoc.getId()+" "+sid+" "+rel+" "+mid1+" "+mid2+"\n\n\n\n\n\n");
+					//System.out.println("E:"+d.cdoc.getId()+" "+sid+" "+rel+" "+mid1+" "+mid2+"\n\n\n\n\n\n");
 					stats[gi][3]++;
 					stats[ri][2]++;
 				}
@@ -53,7 +54,7 @@ public class StatisticsRelation {
 		}
 		
 		if(notfound) { //must be null relation
-			System.out.println("NF:"+d.cdoc.getId()+" "+sid+" "+rel+" "+mid1+" "+mid2+"\n\n\n\n\n\n");
+			//System.out.println("NF:"+d.cdoc.getId()+" "+sid+" "+rel+" "+mid1+" "+mid2+"\n\n\n\n\n\n");
 			int gi = mapStoI("Null");
 			int ri = mapStoI(rel);
 			
@@ -66,6 +67,7 @@ public class StatisticsRelation {
 				}
 			}
 			else {
+				//System.out.println("InCOrrect NULL");
 				stats[gi][3]++;
 				stats[ri][2]++;
 			}

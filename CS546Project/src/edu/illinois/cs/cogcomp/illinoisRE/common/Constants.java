@@ -307,11 +307,11 @@ public class Constants {
 		coarseRelationLabels.add("m1-DISC-m2");
 		coarseRelationLabels.add(Constants.NO_RELATION);
 	}
-	public static List<String> coarseRelationList = new ArrayList<String>();
+	/*public static List<String> coarseRelationList = new ArrayList<String>();
 	static{
 		coarseRelationList.addAll(coarseRelationLabels);		
-	}
-	
+	}*/
+	/*
 	public static Set<String> coarseEntityLabels = new HashSet<String>();
 	static{
 		try{
@@ -328,13 +328,13 @@ public class Constants {
 		catch(Exception e){
 			System.out.println("Coarse Entity Files Not Found");
 		}
-	}
-	public static List<String> coarseEntityList = new ArrayList<String>();
+	}*/
+	/*public static List<String> coarseEntityList = new ArrayList<String>();
 	static{
 		coarseEntityList.addAll(coarseEntityLabels);		
-	}
+	}*/
 	
-	public static Set<String> POSLabels = new HashSet<String>();
+	/*public static Set<String> POSLabels = new HashSet<String>();
 	static{
 		try{
 			BufferedReader br = new BufferedReader(new FileReader("POSLabels"));
@@ -352,7 +352,7 @@ public class Constants {
 	public static List<String> POSList = new ArrayList<String>();
 	static{
 		POSList.addAll(POSLabels);		
-	}
+	}*/
 	
 	public static Set<String> fineRelationLabels = new HashSet<String>();
 	static {
@@ -402,6 +402,12 @@ public class Constants {
 		fineRelationLabels.add("m2-PHYS:Part-Whole-m1");
 		fineRelationLabels.add(Constants.NO_RELATION);
 	}
+	/*
+	public static List<String> fineRelationList = new ArrayList<String>();
+	static{
+		fineRelationList.addAll(fineRelationLabels);		
+	}*/
+		
 	
 	public static Set<String> freqSRLArguments = new HashSet<String>();
 	static {
